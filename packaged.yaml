@@ -68,12 +68,28 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+    DynamoStreamProcessorFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: .
+        Handler: process_stream.lambda_handler
+        Runtime: python3.7
+        Events:
+          DynamoDB1:
+            Type: DynamoDB
+            Properties:
+              Stream:
+                Fn::GetAtt:
+                - UsersTable
+                - StreamArn
+              StartingPosition: TRIM_HORIZON
+              BatchSize: 1
     Metadata:
       SamResourceId: CourseTable
   CreateUserFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/1747b2c11452f2f9bb34799b3e266f42
       Handler: create_user.lambda_handler
       Runtime: python3.7
       Policies:
@@ -91,7 +107,7 @@ Resources:
   GetUserFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/1747b2c11452f2f9bb34799b3e266f42
       Handler: get_user.lambda_handler
       Runtime: python3.7
       Policies:
@@ -109,7 +125,7 @@ Resources:
   AddCourseFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/a5eda1304223c4901c952eb4d28e8ed9
       Handler: add_course.lambda_handler
       Runtime: python3.7
       Policies:
@@ -130,7 +146,7 @@ Resources:
   CreateCourseFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/77486f3a7325e470c0bc1b7ba9805e94
       Handler: create_course.lambda_handler
       Runtime: python3.7
       Policies:
@@ -148,7 +164,7 @@ Resources:
   GetCourseFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/60db46bb393f90ecf2b23bf3e1ce9ae8
       Handler: get_course.lambda_handler
       Runtime: python3.7
       Policies:
@@ -166,7 +182,7 @@ Resources:
   LoginUserFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/60db46bb393f90ecf2b23bf3e1ce9ae8
       Handler: login_user.lambda_handler
       Runtime: python3.7
       Policies:
@@ -187,7 +203,7 @@ Resources:
   ValidateAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://plm-hands-on-dynamodb-lab/2442fab0b29ed8545f6e9d14d0726492
+      CodeUri: s3://plm-hands-on-dynamodb-lab/60db46bb393f90ecf2b23bf3e1ce9ae8
       Handler: validate_auth.lambda_handler
       Runtime: python3.7
       Policies:
